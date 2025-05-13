@@ -38,7 +38,7 @@
         color: #111;
       }
 
-      /* = Inputs = */
+      /* = Fields = */
       .field {
         margin-bottom: 1rem;
         text-align: left;
@@ -50,7 +50,6 @@
         color: #555;
       }
       .field input[type="file"] {
-        display: block;
         width: 100%;
         padding: 0.5rem;
         border: 2px dashed #ccc;
@@ -71,7 +70,6 @@
 
       /* = Button = */
       .button {
-        display: inline-block;
         width: 100%;
         background: #0069ed;
         color: #fff;
@@ -113,36 +111,45 @@
     </div>
 
     <script>
+      // Point this at your running Replit Flask endpoint
       const API_URL = "https://videobuddy.crimsonwheeler.repl.co/upload-video";
 
       document
         .getElementById("uploadForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-          const fileInp = document.getElementById("video");
-          const msgInp = document.getElementById("message");
-          const status = document.getElementById("status");
+          const videoInput = document.getElementById("video");
+          const messageInput = document.getElementById("message");
+          const statusEl = document.getElementById("status");
 
-          if (!fileInp.files.length) {
+          if (!videoInput.files.length) {
             return alert("Please select a video file.");
           }
 
-          status.textContent = "Uploading…";
-          const form = new FormData();
-          form.append("video", fileInp.files[0]);
-          form.append("message ", msgInp.value.trim() || "Here is a video!");
+          statusEl.textContent = "Uploading…";
+
+          const formData = new FormData();
+          formData.append("video", videoInput.files[0]);
+          formData.append(
+            "message",
+            messageInput.value.trim() || "Here is a video!"
+          );
 
           try {
-            const res = await fetch(API_URL, { method: "POST", body: form });
+            const res = await fetch(API_URL, {
+              method: "POST",
+              body: formData,
+            });
             const json = await res.json();
+
             if (res.ok) {
-              status.textContent = json.status;
+              statusEl.textContent = json.status;
             } else {
-              status.textContent = json.error || "Upload failed.";
+              statusEl.textContent = json.error || "Upload failed.";
             }
           } catch (err) {
             console.error(err);
-            status.textContent = "Network error.";
+            statusEl.textContent = "Network error.";
           }
         });
     </script>
