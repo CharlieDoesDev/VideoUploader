@@ -1,0 +1,78 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Inter", sans-serif;
+  background: #eef2f7;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+.card {
+  background: #fff;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  text-align: center;
+}
+.card h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #111;
+}
+.field {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+.field label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: #555;
+}
+.field input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.field input[type="file"]:hover {
+  border-color: #888;
+}
+.field input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+.button {
+  width: 100%;
+  background: #0069ed;
+  color: #fff;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover {
+  background: #0053ba;
+}
+#status,
+#consoleStatus {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  min-height: 1.2em;
+  color: #444;
+}

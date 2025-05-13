@@ -4,94 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VideoBuddy Uploader</title>
-    <style>
-      /* = Reset & Base = */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        font-family: "Inter", sans-serif;
-        background: #eef2f7;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 1rem;
-      }
-
-      /* = Card = */
-      .card {
-        background: #fff;
-        width: 100%;
-        max-width: 400px;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        padding: 2rem;
-        text-align: center;
-      }
-      .card h1 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        color: #111;
-      }
-
-      /* = Fields = */
-      .field {
-        margin-bottom: 1rem;
-        text-align: left;
-      }
-      .field label {
-        display: block;
-        font-size: 0.9rem;
-        margin-bottom: 0.25rem;
-        color: #555;
-      }
-      .field input[type="file"] {
-        width: 100%;
-        padding: 0.5rem;
-        border: 2px dashed #ccc;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: border-color 0.2s;
-      }
-      .field input[type="file"]:hover {
-        border-color: #888;
-      }
-      .field input[type="text"] {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        font-size: 0.95rem;
-      }
-
-      /* = Button = */
-      .button {
-        width: 100%;
-        background: #0069ed;
-        color: #fff;
-        padding: 0.75rem;
-        font-size: 1rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.2s;
-      }
-      .button:hover {
-        background: #0053ba;
-      }
-
-      /* = Status = */
-      #status {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        min-height: 1.2em;
-        color: #444;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="card">
@@ -108,50 +21,19 @@
         <button class="button" type="submit">Upload & Send</button>
         <p id="status"></p>
       </form>
+
+      <hr style="margin: 2rem 0" />
+
+      <form id="consoleForm">
+        <div class="field">
+          <label for="consoleMessage">Print message to console</label>
+          <input type="text" id="consoleMessage" placeholder="Enter text..." />
+        </div>
+        <button class="button" type="submit">Send to Console</button>
+        <p id="consoleStatus"></p>
+      </form>
     </div>
 
-    <script>
-      // Point this at your running Replit Flask endpoint
-      const API_URL = "https://videobuddy.crimsonwheeler.repl.co/upload-video";
-
-      document
-        .getElementById("uploadForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const videoInput = document.getElementById("video");
-          const messageInput = document.getElementById("message");
-          const statusEl = document.getElementById("status");
-
-          if (!videoInput.files.length) {
-            return alert("Please select a video file.");
-          }
-
-          statusEl.textContent = "Uploading…";
-
-          const formData = new FormData();
-          formData.append("video", videoInput.files[0]);
-          formData.append(
-            "message",
-            messageInput.value.trim() || "Here is a video!"
-          );
-
-          try {
-            const res = await fetch(API_URL, {
-              method: "POST",
-              body: formData,
-            });
-            const json = await res.json();
-
-            if (res.ok) {
-              statusEl.textContent = json.status;
-            } else {
-              statusEl.textContent = json.error || "Upload failed.";
-            }
-          } catch (err) {
-            console.error(err);
-            statusEl.textContent = "Network error.";
-          }
-        });
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
