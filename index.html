@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VideoBuddy Uploader</title>
+    <style>
+      /* = Reset & Base = */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #eef2f7;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+      }
+
+      /* = Card = */
+      .card {
+        background: #fff;
+        width: 100%;
+        max-width: 400px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        padding: 2rem;
+        text-align: center;
+      }
+      .card h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #111;
+      }
+
+      /* = Inputs = */
+      .field {
+        margin-bottom: 1rem;
+        text-align: left;
+      }
+      .field label {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+        color: #555;
+      }
+      .field input[type="file"] {
+        display: block;
+        width: 100%;
+        padding: 0.5rem;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .field input[type="file"]:hover {
+        border-color: #888;
+      }
+      .field input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.95rem;
+      }
+
+      /* = Button = */
+      .button {
+        display: inline-block;
+        width: 100%;
+        background: #0069ed;
+        color: #fff;
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .button:hover {
+        background: #0053ba;
+      }
+
+      /* = Status = */
+      #status {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        min-height: 1.2em;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>VideoBuddy Uploader</h1>
+      <form id="uploadForm">
+        <div class="field">
+          <label for="video">Choose a video file</label>
+          <input type="file" id="video" accept="video/*" required />
+        </div>
+        <div class="field">
+          <label for="message">Optional message</label>
+          <input type="text" id="message" placeholder="Your message..." />
+        </div>
+        <button class="button" type="submit">Upload & Send</button>
+        <p id="status"></p>
+      </form>
+    </div>
+
+    <script>
+      const API_URL = "https://videobuddy.crimsonwheeler.repl.co/upload-video";
+
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const fileInp = document.getElementById("video");
+          const msgInp = document.getElementById("message");
+          const status = document.getElementById("status");
+
+          if (!fileInp.files.length) {
+            return alert("Please select a video file.");
+          }
+
+          status.textContent = "Uploading…";
+          const form = new FormData();
+          form.append("video", fileInp.files[0]);
+          form.append("message", msgInp.value.trim() || "Here is a video!");
+
+          try {
+            const res = await fetch(API_URL, { method: "POST", body: form });
+            const json = await res.json();
+            if (res.ok) {
+              status.textContent = json.status;
+            } else {
+              status.textContent = json.error || "Upload failed.";
+            }
+          } catch (err) {
+            console.error(err);
+            status.textContent = "Network error.";
+          }
+        });
+    </script>
+  </body>
+</html>
